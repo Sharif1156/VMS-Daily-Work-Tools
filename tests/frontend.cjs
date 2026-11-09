@@ -49,6 +49,7 @@ w.fetch = async (url) => ({
   headers: { get: () => "application/json" },
   json: async () => (url.endsWith("/me") ? { user, csrf: "test" } : data),
 });
+w.eval(fs.readFileSync("app/static/tools.js", "utf8"));
 w.eval(fs.readFileSync("app/static/app.js", "utf8"));
 setTimeout(() => {
   try {

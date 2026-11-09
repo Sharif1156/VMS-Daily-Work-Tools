@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#2B6CB0" />
+    <meta name="description" content="Free online tools for text, encoding, developers, security, colour, calculators, dates and images. Everything runs in your browser." />
+    <title>NAFi iT Tools — Free Online Tools</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <link rel="stylesheet" href="/static/tools-site.css" />
+  </head>
+  <body class="tools-site">
+    <div class="site-header">
+      <div class="site-inner">
+        <a class="site-logo" href="/tools"><span class="brandmark">N</span><strong>NAFi iT Tools</strong></a>
+        <label class="site-search"><input id="site-search" type="search" placeholder="Search tools…  ( / )" aria-label="Search tools" autocomplete="off" /></label>
+        <div class="site-actions">
+          <button class="icon-button" id="theme" type="button" aria-label="Toggle dark / light mode">◐</button>
+          <a class="btn primary" href="/">Open VMS</a>
+        </div>
+      </div>
+    </div>
+    <div class="site-main">
+      <section class="site-hero" id="hero">
+        <h1><span id="count">44</span>+ Free Online Tools for Everyday Tasks</h1>
+        <p>Text, encoding, developer, security, colour, calculators, dates and images. Fast, free and private — everything runs in your browser, your data never leaves your device.</p>
+        <div class="chips" id="popular"></div>
+        <div class="stat-row"><span><b id="count2">44</b> tools</span><span><b id="catcount">8</b> categories</span><span><b>No sign-up</b> needed</span><span><b>Files stay</b> on your device</span></div>
+      </section>
+      <div id="tool-panel" hidden></div>
+      <div class="cat-pills" id="cats"></div>
+      <div id="dir"></div>
+    </div>
+    <div class="site-footer">© <span id="year"></span> NAFi iT · Tools run locally in your browser · <a href="/">Sign in to VMS</a></div>
+    <div id="toast" role="status"></div>
+    <script src="/static/tools.js"></script>
+    <script src="/static/tools-site.js"></script>
+  </body>
+</html>

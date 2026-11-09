@@ -84,6 +84,8 @@ function toast(message) {
   clearTimeout(window.toastTimer);
   window.toastTimer = setTimeout(() => (el.style.display = "none"), 4500);
 }
+window.NTools.toast = toast;
+document.body.classList.toggle("dark", localStorage.getItem("vms-theme") === "dark");
 async function api(url, options = {}) {
   const headers = { "X-CSRF-Token": state.csrf, ...options.headers };
   if (options.body && !(options.body instanceof FormData))
@@ -155,6 +157,7 @@ function initials(name) {
     .join("");
 }
 function go(page) {
+  if (page !== "other" && !state.keepQuery) state.toolQuery = "";
   state.page = page;
   render();
   window.scrollTo(0, 0);
@@ -398,37 +401,14 @@ function pageContent() {
     content = `<section class="card form-card"><div class="tile-icon">${icon("server")}</div><h2 style="margin-top:18px">NAFi iT File Server</h2><p>External server connection has not been verified. Use a trusted network. The current address uses ${new URL(d.file_server).protocol === "https:" ? "HTTPS" : "unencrypted HTTP; ask your administrator to configure HTTPS before sending credentials"}.</p><div class="result">${esc(d.file_server)}</div><div style="display:flex;gap:10px;margin-top:18px"><a class="btn primary" href="${esc(d.file_server)}" target="_blank" rel="noopener noreferrer">Open file server ${icon("arrow")}</a>${button("Copy address", "copy-server", "copy")}</div></section>`;
   }
   if (page === "other") {
-    content = `<div class="directory">${[
-      [
-        "dates",
-        "Date calculator",
-        "Date differences and add/subtract days",
-        "calendar",
-      ],
-      [
-        "timezone",
-        "Time zone converter",
-        "Dhaka, New York, Dublin and more",
-        "globe",
-      ],
-      [
-        "qr",
-        "QR code generator",
-        "Generate downloadable text, URL or Wi-Fi QR codes",
-        "qr",
-      ],
-      [
-        "duplicates",
-        "Duplicate file checker",
-        "Private, local SHA-256 file comparison",
-        "file",
-      ],
-    ]
-      .map(
-        ([id, label, desc, i]) =>
-          `<button class="tool-card" data-action="tool-${id}"><span class="tile-icon">${icon(i)}</span><h2>${label}</h2><p>${desc}</p><span class="link">Open tool ${icon("arrow")}</span></button>`,
-      )
-      .join("")}</div><div id="utility" style="margin-top:22px"></div>`;
+    const q = state.toolQuery || "";
+    const core = [
+      ["dates", "Date calculator", "Date differences and add/subtract days"],
+      ["timezone", "Time zone converter", "Dhaka, New York, Dublin and more"],
+      ["qr", "QR code generator", "Generate downloadable text, URL or Wi-Fi QR codes"],
+      ["duplicates", "Duplicate file checker", "Private, local SHA-256 file comparison"],
+    ].filter(([, l, d]) => !q || (l + " " + d).toLowerCase().includes(q.toLowerCase()));
+    content = `<div class="tools-search"><input id="tool-search" type="search" placeholder="Search ${window.NTools.tools.length + 4}+ tools — text, PDF, color, calculators…" value="${esc(q)}" aria-label="Search tools"></div><p style="margin:-6px 0 16px"><a class="link" href="/tools" target="_blank" rel="noopener">Open the public Tools site (no login) ↗</a></p><div id="utility" style="margin-bottom:22px"></div>${core.length ? `<h3 class="cat-title">Workspace utilities</h3><div class="directory">${core.map(([id, label, desc]) => `<button class="tool-card" data-action="tool-${id}"><h2>${label}</h2><p>${desc}</p><span class="link">Open tool ${icon("arrow")}</span></button>`).join("")}</div>` : ""}<div id="tool-dir">${window.NTools.directory(q)}</div>`;
   }
   if (page === "portal") {
     const mine = d.attendance.filter((a) => a.user_id === state.user.id);
@@ -482,6 +462,26 @@ function bind() {
   document
     .querySelectorAll("form")
     .forEach((f) => (f.onsubmit = (e) => submit(e)));
+  const bindTools = () =>
+    document.querySelectorAll("[data-ntool]").forEach(
+      (b) =>
+        (b.onclick = () => {
+          const host = document.querySelector("#utility");
+          window.NTools.open(b.dataset.ntool, host);
+        }),
+    );
+  bindTools();
+  document.querySelector("#tool-search")?.addEventListener("input", (e) => {
+    state.toolQuery = e.target.value;
+    document.querySelector("#tool-dir").innerHTML = window.NTools.directory(state.toolQuery);
+    bindTools();
+  });
+  document.querySelector("#global-search")?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && e.target.value.trim()) {
+      state.toolQuery = e.target.value.trim();
+      go("other");
+    }
+  });
 }
 async function action(a) {
   try {

@@ -2,7 +2,7 @@
   "name": "nafi-vms-frontend-checks",
   "private": true,
   "scripts": {
-    "test": "node tests/frontend.cjs"
+    "test": "node tests/tools.cjs && node tests/frontend.cjs"
   },
   "devDependencies": {
     "jsdom": "^26.1.0"

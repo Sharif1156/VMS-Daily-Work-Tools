@@ -36,6 +36,10 @@ Windows: [installation and operations guide](docs/WINDOWS.md).
 - Date difference/add-subtract, Dhaka/New York/Dublin/UTC time conversion, local SHA-256 duplicate file reports without destructive deletion.
 - Windows install/start/backup/task-registration scripts, initial versioned schema, environment example, automated API tests.
 
+- **Tools Hub (44 browser-side tools)** in `app/static/tools.js`, shown under *Other Tools* with search: text (word counter, case converter, diff, extractors…), encoding (Base64, URL, HTML, hex, JWT, Morse), developer (JSON, regex, timestamp, minifier, UUID), security (SHA-1/256/512, HMAC, password generator/strength), colour (converter, contrast, gradient, shades), calculators (age, BMI, EMI, percentage, GPA, units, random), date (week number, countdown) and an image compressor/converter. Everything runs locally; nothing is uploaded. Add a tool by appending one object to the `tools` array.
+- **Public Tools site at `/tools`** (no login): DailyUseTools-style header, search, category pills, popular tools and per-tool links like `/tools#json`. Files: `tools.html`, `tools-site.css`, `tools-site.js`.
+- DailyUseTools-style blue theme (primary `#2B6CB0`) with light and dark modes.
+
 ## Not implemented / not production-certified
 
 This release does **not** claim to implement: full Bengali localization; employee profile editing or self-service password reset; editable role/compensation management after creation; persisted payroll/salary history and custom salary rules; late-arrival/early-leave policies; full month calendar UI or roster PDF export; tool enable/disable permissions; notification delivery; audited backup/restore web administration; WAN speed test, public IP/ISP/geolocation lookup, ping, traceroute or HTTP probing; PDF preview UI; arbitrary-frame-accurate video stepping; asynchronous video job queues or measured progress percentages; distributed rate limits; malware scanning; SSO/MFA; comprehensive operations monitoring. These need additional implementation and acceptance testing before enterprise rollout.

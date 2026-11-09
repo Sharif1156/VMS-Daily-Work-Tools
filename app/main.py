@@ -600,6 +600,12 @@ def index():
     return FileResponse(ROOT / "static/index.html")
 
 
+@app.get("/tools")
+def public_tools():
+    """Public, login-free page for the browser-side tools (no data is sent to the server)."""
+    return FileResponse(ROOT / "static/tools.html")
+
+
 @app.post("/api/schedule/import")
 async def roster_import(
     file: UploadFile = File(...), u: User = Depends(admin), s: Session = Depends(db)

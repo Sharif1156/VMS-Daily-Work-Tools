@@ -257,3 +257,11 @@ def test_login_rate_limit():
         ).status_code
         == 429
     )
+
+
+def test_public_tools_page_needs_no_login():
+    c = TestClient(app, client=(f"192.0.2.{next(client_ids)}", 50000))
+    r = c.get("/tools")
+    assert r.status_code == 200
+    assert "NAFi iT Tools" in r.text
+    assert c.get("/static/tools.js").status_code == 200
